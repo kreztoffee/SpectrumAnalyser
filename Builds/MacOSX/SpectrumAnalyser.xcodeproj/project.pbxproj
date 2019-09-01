@@ -61,13 +61,17 @@
 			isa = PBXBuildFile;
 			fileRef = A9407131B5CB9CD22FA40175;
 		};
+		0435834FFCCB1D97013FBA0C = {
+			isa = PBXBuildFile;
+			fileRef = 8A558B35B9B8FC36F7F4D20F;
+		};
 		25E9F7E9BF8CD11AD2DC3BB7 = {
 			isa = PBXBuildFile;
 			fileRef = 1E0385A8602FC7785D51ADEE;
 		};
-		0435834FFCCB1D97013FBA0C = {
+		2DDAC4A94E999D092F0605F0 = {
 			isa = PBXBuildFile;
-			fileRef = 8A558B35B9B8FC36F7F4D20F;
+			fileRef = CBCFAFDFE9C39E619E632AAF;
 		};
 		6DCA3353CCA7F4100397FC3A = {
 			isa = PBXBuildFile;
@@ -176,6 +180,13 @@
 			name = "juce_gui_extra";
 			path = "~/JUCE/modules/juce_gui_extra";
 			sourceTree = "<absolute>";
+		};
+		2C5EB7580FAA4D16CFB51066 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SpectrumView.h;
+			path = ../../Source/SpectrumView.h;
+			sourceTree = "SOURCE_ROOT";
 		};
 		410AB3E1C5FABC19CB9B7692 = {
 			isa = PBXFileReference;
@@ -331,6 +342,13 @@
 			path = "../../JuceLibraryCode/include_juce_data_structures.mm";
 			sourceTree = "SOURCE_ROOT";
 		};
+		CBCFAFDFE9C39E619E632AAF = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = SpectrumView.cpp;
+			path = ../../Source/SpectrumView.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
 		CD107452280C4C40DAFF762A = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.objcpp;
@@ -446,9 +464,11 @@
 		7D4E2F77CB01D91F64A71CF5 = {
 			isa = PBXGroup;
 			children = (
-				12627B5FC2BC6B745BBA4208,
-				1E0385A8602FC7785D51ADEE,
 				8A558B35B9B8FC36F7F4D20F,
+				1E0385A8602FC7785D51ADEE,
+				12627B5FC2BC6B745BBA4208,
+				CBCFAFDFE9C39E619E632AAF,
+				2C5EB7580FAA4D16CFB51066,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -762,8 +782,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25E9F7E9BF8CD11AD2DC3BB7,
 				0435834FFCCB1D97013FBA0C,
+				25E9F7E9BF8CD11AD2DC3BB7,
+				2DDAC4A94E999D092F0605F0,
 				6DCA3353CCA7F4100397FC3A,
 				F70CA1F9A1DA6C2F6C4A214D,
 				31802F00DFF8C32E96F685FC,
