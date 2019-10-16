@@ -3,8 +3,23 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SpectrumView.h"
 
+enum eFftSize
+{
+	k128,
+	k256,
+	k512,
+	k1024,
+	k2048,
+	k4096,
+	k8192
+};
+
+extern StringArray strFftSize;
+extern Array<int> nFftSize;
+
 class MainComponent
 	: public AudioAppComponent
+	, public ComboBox::Listener
 	, public Button::Listener
 	, public ChangeListener
 	, public Timer
@@ -34,6 +49,7 @@ private:
 	void paint(Graphics& g) override;
 	void resized() override;
 	void buttonClicked(juce::Button* button) override;
+	void comboBoxChanged(ComboBox* comboBox) override;
 	void changeState(eTransportState newState);
 	void changeListenerCallback(ChangeBroadcaster* source) override;
 	void timerCallback() override;
@@ -46,6 +62,8 @@ private:
 	TextButton m_btnStop;
 	Label m_lblStatus;
 	Label m_lblPlayBackTime;
+
+	ComboBox m_selFftSize;
 
 	SpectrumView m_spectrumView;
 

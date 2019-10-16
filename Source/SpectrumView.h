@@ -12,7 +12,9 @@ public:
 	SpectrumView();
 	~SpectrumView();
 
-	void setHopSize(int size);
+	void setSampleRate(float sampleRate);
+	void setFftSize(int size);
+	void cleanup();
 	void pushSample(float sample);
 
 private:
@@ -22,6 +24,7 @@ private:
 	void resized() override;
 	void timerCallback() override;
 
+	float m_sampleRate;
 	int m_fftSize;
 	float* m_fifo;
 	float* m_fftIn;
@@ -32,5 +35,6 @@ private:
 	float* m_drawingData;
 
 	int m_fifoIndex;
-	bool m_nextBlockReady;
+	Atomic<bool> m_nextBlockReady;
+	CriticalSection m_blockLock;
 };

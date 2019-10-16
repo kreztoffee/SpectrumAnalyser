@@ -1,5 +1,27 @@
 #include "MainComponent.h"
 
+StringArray strFftSize
+{
+	"128",
+	"256",
+	"512",
+	"1024",
+	"2048",
+	"4096",
+	"8192"
+};
+
+Array<int> nFftSize
+{
+	128,
+	256,
+	512,
+	1024,
+	2048,
+	4096,
+	8192
+};
+
 MainComponent::MainComponent()
 	: m_transportState(kStopped)
 	, m_thumbnailCache(32)
@@ -40,13 +62,18 @@ MainComponent::MainComponent()
 	m_lblPlayBackTime.setText("-/-", NotificationType::dontSendNotification);
 	addAndMakeVisible(m_lblPlayBackTime);
 
+	m_selFftSize.addItemList(strFftSize, 1);
+	m_selFftSize.setSelectedItemIndex(k1024, NotificationType::dontSendNotification);
+	m_selFftSize.addListener(this);
+	addAndMakeVisible(m_selFftSize);
+
+	m_spectrumView.setFftSize(1024);
+	addAndMakeVisible(m_spectrumView);
+
 	m_thumbnail.addChangeListener(this);
 
 	m_formatManager.registerBasicFormats();
 	m_transportSource.addChangeListener(this);
-
-	m_spectrumView.setHopSize(4096);
-	addAndMakeVisible(m_spectrumView);
 
 	startTimer(100);
 }
@@ -69,6 +96,7 @@ void MainComponent::prepareToPlay(int samplesPerBlockExpected, double sampleRate
 	if (sampleRate != m_sampleRate)
 	{
 		m_sampleRate = sampleRate;
+		m_spectrumView.setSampleRate(m_sampleRate);
 	}
 }
 
@@ -92,6 +120,7 @@ void MainComponent::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill
 
 void MainComponent::releaseResources()
 {
+	m_transportSource.setSource(nullptr);
 }
 
 void MainComponent::paint(Graphics& g)
@@ -118,7 +147,9 @@ void MainComponent::resized()
 	m_lblStatus.setBounds(150, 120, 100, 20);
 	m_lblPlayBackTime.setBounds(270, 120, 100, 20);
 
-	m_spectrumView.setBounds(10, 150, getWidth() - 70, getHeight() - 150 - 10);
+	m_selFftSize.setBounds(getWidth() - 110, 150, 100, 20);
+
+	m_spectrumView.setBounds(10, 150, getWidth() - 120 - 10, getHeight() - 150 - 10);
 }
 
 void MainComponent::buttonClicked(juce::Button* button)
@@ -170,6 +201,14 @@ void MainComponent::buttonClicked(juce::Button* button)
 			changeState(kStopping);
 
 		m_btnStop.setEnabled(false);
+	}
+}
+
+void MainComponent::comboBoxChanged(ComboBox* comboBox)
+{
+	if (comboBox == &m_selFftSize)
+	{
+		m_spectrumView.setFftSize(nFftSize[m_selFftSize.getSelectedItemIndex()]);
 	}
 }
 
