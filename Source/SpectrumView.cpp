@@ -39,6 +39,8 @@ void SpectrumView::setFftSize(int size)
 
 	m_fifo = new float[size];
 	m_drawingData = new float[size];
+	memset(m_fifo, 0, size * sizeof(float));
+	memset(m_drawingData, 0, size * sizeof(float));
 }
 
 void SpectrumView::cleanup()
@@ -89,20 +91,20 @@ void SpectrumView::pushSample(float sample)
 
 void SpectrumView::drawFrame()
 {
-	const float minDb = -100.0f;
-	const float maxDb = 0.0f;
 	const float fftWeight = 1.0f / m_fftSize;
 
 	fftwf_execute(m_fftForward);
 
 	for (int i = 0; i < m_fftSize; ++i)
 	{
-		m_fftOut[i][0] *= 2.0f * fftWeight;
-		m_fftOut[i][1] *= 2.0f * fftWeight;
+		m_fftOut[i][0] *= fftWeight;
+		m_fftOut[i][1] *= fftWeight;
 	}
 
 	float maxval = -100.0f;
-
+	const float minDb = -100.0f;
+	const float maxDb = 0.0f;
+	
 	for (int i = 0; i < m_drawPoints; ++i)
 	{
 		float incX = logf(1.0f + (i / (float)m_drawPoints));
@@ -155,7 +157,12 @@ void SpectrumView::paint(Graphics& g)
 		int idx0 = static_cast<int>(std::powf(10, ((i - 1) / width) * logSampleRate) / binSize);
 		int idx1 = static_cast<int>(std::powf(10, (i / width) * logSampleRate) / binSize);
 
-		g.drawLine({ (float)i - 1.0f, (float)jmap(m_drawingData[idx0], (float)getHeight(), 0.0f), (float)i, (float)jmap(m_drawingData[idx1], (float)getHeight(), 0.0f) });
+		float x0 = (float)i - 1.0f;
+		float y0 = (float)jmap(m_drawingData[idx0], (float)getHeight(), 0.0f);
+		float x1 = (float)i;
+		float y1 = (float)jmap(m_drawingData[idx1], (float)getHeight(), 0.0f);
+		
+		g.drawLine({ x0, y0, x1, y1 });
 	}
 
 	const float minDb = -100.0f;
