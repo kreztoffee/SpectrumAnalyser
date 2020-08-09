@@ -271,6 +271,6 @@ void MainComponent::changeListenerCallback(ChangeBroadcaster* source)
 
 void MainComponent::timerCallback()
 {
-	double currentTime = m_transportSource.getCurrentPosition();
-	double length = m_transportSource.getLengthInSeconds();
+	//double currentTime = m_transportSource.getCurrentPosition();
+	//double length = m_transportSource.getLengthInSeconds();
 }
