@@ -33,26 +33,26 @@ void SpectrumView::setFftSize(int size)
 	m_fftSize = size;
 	m_drawPoints = size / 2;
 
-	m_fftIn = (float*)fftwf_malloc(sizeof(float) * size);
-	m_fftOut = (fftwf_complex*)fftwf_malloc(sizeof(fftwf_complex) * size);
-	m_fftForward = fftwf_plan_dft_r2c_1d(size, m_fftIn, m_fftOut, FFTW_ESTIMATE);
+	m_fftIn = (double*)fftw_malloc(sizeof(double) * size);
+	m_fftOut = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * size);
+	m_fftForward = fftw_plan_dft_r2c_1d(size, m_fftIn, m_fftOut, FFTW_ESTIMATE);
 
-	m_fifo = new float[size];
+	m_fifo = new double[size];
 	m_drawingData = new float[size];
-	memset(m_fifo, 0, size * sizeof(float));
+	memset(m_fifo, 0, size * sizeof(double));
 	memset(m_drawingData, 0, size * sizeof(float));
 }
 
 void SpectrumView::cleanup()
 {
 	if (m_fftIn)
-		fftwf_free(m_fftIn);
+		fftw_free(m_fftIn);
 
 	if (m_fftOut)
-		fftwf_free(m_fftOut);
+		fftw_free(m_fftOut);
 
 	if (m_fftForward)
-		fftwf_destroy_plan(m_fftForward);
+		fftw_destroy_plan(m_fftForward);
 
 	if (m_fifo)
 		delete[] m_fifo;
@@ -93,7 +93,7 @@ void SpectrumView::drawFrame()
 {
 	const float fftWeight = 1.0f / m_fftSize;
 
-	fftwf_execute(m_fftForward);
+	fftw_execute(m_fftForward);
 
 	for (int i = 0; i < m_fftSize; ++i)
 	{

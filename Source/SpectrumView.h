@@ -26,10 +26,10 @@ private:
 
 	float m_sampleRate;
 	int m_fftSize;
-	float* m_fifo;
-	float* m_fftIn;
-	fftwf_complex* m_fftOut;
-	fftwf_plan m_fftForward;
+	double* m_fifo;
+	double* m_fftIn;
+	fftw_complex* m_fftOut;
+	fftw_plan m_fftForward;
 
 	int m_drawPoints;
 	float* m_drawingData;
